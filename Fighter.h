@@ -3,9 +3,11 @@
 
 class Fighter {
 public:	
-	Fighter(int health, int hitStrength);
+	//Fighter(int health, int hitStrength);//added init
+	Fighter();
 	~Fighter();
-	int getHealth;
+	void init(int health, int hitStrength);
+	int getHealth();
 	void takeHealth( int damage );
 	int getHitStrength();
 private:

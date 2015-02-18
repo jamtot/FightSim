@@ -16,7 +16,7 @@
 	block, but it will incur a health penalty
 	if they misjudge the block.	
 	*****************************************/
-
+#include "Game.h"
 int main()
 {
 	Game myGame;

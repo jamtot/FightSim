@@ -1,9 +1,10 @@
-/*	************FIGHT SIMULATOR************
+	/***********FIGHT SIMULATOR************
 	A turn-based, text-based fight simulator
 	in which the players take turns using 
-	attacks on each other. The attacking 
-	player can choose to punch high, 
-	punch low, or kick.
+	attacks on each other. 
+	
+	The attacking player can choose to punch 
+	high, punch low, or kick.
 
 	A high punch will hit the head if landed,
 	a low punch will hit the mid-section, and
@@ -15,10 +16,11 @@
 	block, but it will incur a health penalty
 	if they misjudge the block.	
 	*****************************************/
+#include "Game.h"
 
 int main()
 {
-	Game myGame;
+	Game myGame = Game();
 
 	myGame.init();
 	myGame.loop();

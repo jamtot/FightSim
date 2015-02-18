@@ -1,6 +1,6 @@
 #include "Fighter.h"
 
-Fighter::Fighter(int health, int hitStrength) : 
+Fighter::Fighter(int health, int hitStrength) : mHealth(health), mHitStrength(hitStrength)
 {}
 
 Fighter::~Fighter()

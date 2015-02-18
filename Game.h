@@ -3,6 +3,9 @@
 
 #include <ctime>
 #include "Fighter.h"
+#include <iostream>
+
+using namespace std;
 
 class Game {
 public:
@@ -11,6 +14,7 @@ public:
 private:
 	Fighter mPlayer;
 	Fighter mComputer;
+	bool playerTurn;
 };
 
 #endif

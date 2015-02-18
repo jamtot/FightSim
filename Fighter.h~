@@ -5,12 +5,12 @@ class Fighter {
 public:	
 	Fighter(int health, int hitStrength);
 	~Fighter();
-	int getHealth;
+	int getHealth();
 	void takeHealth( int damage );
 	int getHitStrength();
 private:
 	int mHealth;
-	int hitStrength;
+	int mHitStrength;
 };
 
 #endif

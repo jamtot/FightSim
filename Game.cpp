@@ -33,11 +33,11 @@ void Game::init() {
 
 		cout << "\nUnfair, is it? Alrighty. How much health do you want your fighter to have? ";
 		cin >> health;
-		cout << "\n\nAnd how much damage will your attack cause? ";
+		cout << "\nAnd how much damage will your attack cause? ";
 		cin >>attack;
 		
 		mPlayer.init(health, attack);
-		cout << "\n\nSo you have " << health << " health, and " << attack << " attack. What health do I get? ";
+		cout << "\nSo you have " << health << " health, and " << attack << " attack. What health do I get? ";
 		cin >> health;
 		
 		//gotta have the computer intimidate the player
@@ -47,7 +47,7 @@ void Game::init() {
 			cout << "\nOh you think I'm that easy? Huh?\n";
 		}
 
-		cout << "So how much do my attacks land on you? ";
+		cout << "\nSo how much do my attacks land on you? ";
 		cin >> attack;
 		
 		//do you even lift?
@@ -69,7 +69,7 @@ void Game::init() {
 	// 5. Rinse and repeat until someone has health > 1.
 	// 6. Game is overm collect your winnings and go home.
 	
-	cout << "\n\nA coin will be flipped to determine who starts, do you want heads or tails? Enter H or T: ";
+	cout << "\nA coin will be flipped to determine who starts, do you want heads or tails? Enter H or T: ";
 
 	do {	
 	cin >> hOrT;
@@ -86,9 +86,9 @@ void Game::init() {
 	coin = (rand() % 2);//this will give the remainder of a division by two, so either 0 or 1.
 	
 	if (coin == 0) {
-		cout << "Heads!\n";
+		cout << "\nHeads!\n";
 	} else {
-		cout << "Tails!\n";
+		cout << "\nTails!\n";
 	}
 
 	if (coin == pChose) {

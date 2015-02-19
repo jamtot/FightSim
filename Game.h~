@@ -14,13 +14,14 @@ public:
 private:
 	Fighter mPlayer;
 	Fighter mComputer;
-	bool playerTurn;
+	bool playerTurn, countersOn;
 
 	void printMove(char highMidLow, bool isPlayer, bool isAttack);
 	char highMidOrLow();
 	bool randBool();
 	char getPlayerMove(bool attack);
-	void outcome(char pMove, char cMove, bool isPlayerMove)
+	void outcome(char pMove, char cMove, bool isPlayerMove, bool attemptCounter);
+	char makeCharSmall(char character);
 };
 
 #endif

@@ -2,7 +2,8 @@
 #include <stdlib.h>
 
 void Game::init() {
-	char even, hOrT;
+	countersOn = false;
+	char even, hOrT, counterYN;
 	int health;
 	int attack;
 	srand(time(NULL));
@@ -58,7 +59,16 @@ void Game::init() {
 		}
 
 		mComputer.init(health, attack);
+
+		
 	}
+
+	cout << "\nCan we counter attack? (Y/N)";
+	do { cin >> counterYN; } while ( (counterYN != 'y') && (counterYN != 'Y') && (counterYN != 'n') && (counterYN != 'N') );
+	counterYN = makeCharSmall(counterYN);//if higher case, make lower case
+
+	if (counterYN == 'y') { countersOn = true; cout << "\nCountering is on.\n"; }
+	else { countersOn = false; cout << "\nCountering is off.\n"; }
 	//Players now set up.
 
 	//TODO
@@ -104,9 +114,12 @@ void Game::loop() {
 	
 	char pHml;
 	char cHml;
+	char pCounter;
+	bool attempt;
 	// game loop, while both players have health, continue playing.
 	while (mPlayer.getHealth() > 0 && mComputer.getHealth() > 0)
 	{
+		attempt = false;
 		if (playerTurn) {// the players turn
 
 			//get the players move input
@@ -120,9 +133,16 @@ void Game::loop() {
 			
 			//TODO
 			//have a roll to see if the computer attempts a counter
-
-			//decide outcome and change health values to suit
-			outcome(pHml, cHml, playerTurn);
+			if (countersOn)
+			{
+				attempt = randBool();
+				cout << "\nI attempt a block.\n";
+				outcome(pHml, cHml, playerTurn, attempt); 					
+			}
+			else {
+				//decide outcome and change health values to suit
+				outcome(pHml, cHml, playerTurn);
+			}
 
 			//change turn to computers
 			playerTurn = false;
@@ -136,6 +156,14 @@ void Game::loop() {
 			
 			//TODO
 			//take in whether the player counters
+			if (countersOn) {
+				cout << "\nDo you want to attempt a counter, for if your block succeeds? (If a counter fails, you will suffer twice the damage.) (Y/N)";
+				do { cin >> pCounter; } while ( (pCounter != 'Y') && (pCounter != 'y') && (pCounter != 'N') && (pCounter != 'n'));
+				pCounter = makeCharSmall(pCounter);
+				if (pCounter == 'y')
+					attempt = true;
+				else attempt = false;
+			}
 
 			//decide the computers attack
 			cHml = highMidOrLow();
@@ -143,7 +171,7 @@ void Game::loop() {
 
 			//decide outcome
 			//change health values to suit
-			outcome(pHml, cHml, playerTurn);
+			outcome(pHml, cHml, playerTurn, attempt);
 
 			playerTurn = true;
 		}
@@ -209,19 +237,32 @@ char Game::getPlayerMove(bool attack)
 	do { cin >> movPos; } while ( (movPos != 'H') && (movPos != 'h') && (movPos != 'M') && (movPos != 'm') && (movPos != 'L') && (movPos != 'l') );
 	
 	//for debugging purposes
-	if (movPos < 97) { //if higher case, make lowercase.
+	/*if (movPos < 97) { //if higher case, make lowercase.
 		cout << endl << " Variable movPos was : " << movPos << endl;
 		movPos+=32;
 		cout << endl << " Variable movPos now : " << movPos << endl;
-	}
+	}*/
+
+	movPos = makeCharSmall(movPos);
 	return movPos;
 }
 
-void Game::outcome(char pMove, char cMove, bool isPlayerMove)
+void Game::outcome(char pMove, char cMove, bool isPlayerMove, bool attemptCounter)
 {
 	//decide outcome
 	if (pMove == cMove) { 
 		cout << "\nAttack was successfully blocked.\n";
+
+		if (attemptCounter)
+		{
+			cout << "\nCounter attack landed\n";
+			//whoever was countered loses health
+			if (!isPlayerMove) {	
+			mComputer.takeHealth(mPlayer.getHitStrength());
+			} else {
+				mPlayer.takeHealth(mComputer.getHitStrength());
+			}
+		}
 	} else { 
 		cout << "\nAttack was not blocked, damage was sustained.\n";
 
@@ -230,6 +271,23 @@ void Game::outcome(char pMove, char cMove, bool isPlayerMove)
 		} else {
 			mPlayer.takeHealth(mComputer.getHitStrength());
 		}
+
+		if (attemptCounter)
+		{
+			cout << "\nCounter fails too, damage was doubled.\n";
+			//quick and dirty doubling of damage
+			if (isPlayerMove) {	
+			mComputer.takeHealth(mPlayer.getHitStrength());
+			} else {
+				mPlayer.takeHealth(mComputer.getHitStrength());
+			}
+		}
 	}
 	cout << "\nHow we stand; You have " << mPlayer.getHealth() << " health. I have " << mComputer.getHealth() << " health.\n";
+}
+
+char Game::makeCharSmall(char character)
+{
+	if (character < 97) character +=32;
+	return character;
 }

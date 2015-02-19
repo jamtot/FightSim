@@ -15,6 +15,10 @@ private:
 	Fighter mPlayer;
 	Fighter mComputer;
 	bool playerTurn;
+
+	void printMove(char highMidLow, bool isPlayer, bool isAttack);
+	char highMidOrLow();
+	bool randBool();
 };
 
 #endif

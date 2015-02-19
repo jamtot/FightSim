@@ -5,6 +5,7 @@ void Game::init() {
 	char even, hOrT;
 	int health;
 	int attack;
+	srand(time(NULL));
 
 	//ask for whether the fight is even
 	cout << "Welcome to the big fight. ";
@@ -61,7 +62,7 @@ void Game::init() {
 	//Players now set up.
 
 	//TODO
-	// 1. Flip a coin to see who attacks first.
+	// 1. DONE! Flip a coin to see who attacks first.
 	// 2. Take attack/block from each player (high, mid, low).
 	// 3. If blocked, attack does no damage, if not blocked, take damage.
 	// 4. If attack countered successfully, attacking player takes damage, if not successfully countered, blocking player takes extra damage.
@@ -81,7 +82,7 @@ void Game::init() {
 	} else { 
 		cout << "\nYou chose tails.\n"; pChose = 1; 
 	}
-	srand(time(NULL));
+	
 	coin = (rand() % 2);//this will give the remainder of a division by two, so either 0 or 1.
 	
 	if (coin == 0) {
@@ -98,4 +99,98 @@ void Game::init() {
 		playerTurn = false;
 	}
 }
-void Game::loop(){}
+void Game::loop() {
+	
+	char pHml;
+	char cHml;
+	// game loop, while both players have health, continue playing.
+	while (mPlayer.getHealth() > 0 && mComputer.getHealth() > 0)
+	{
+		if (playerTurn) {// the players turn
+
+			//take in players attack
+			cout << "Are you going to attack high, mid, or low? (H/M/L): ";
+			do { cin >> pHml; } while ( (pHml != 'H') && (pHml != 'h') && (pHml != 'M') && (pHml != 'm') && (pHml != 'L') && (pHml != 'l') );
+			
+			
+			if (pHml < 97) { //if higher case, make lowercase.
+				cout << endl << " Variable pHml was : " << pHml << endl;
+				pHml+=32;
+				cout << endl << " Variable pHml now : " << pHml << endl;
+			}
+			
+			printMove(pHml,true,playerTurn);
+
+			//the computers block
+			cHml = highMidOrLow();
+			printMove( cHml, false, false );
+			
+			//TODO
+			//have a roll to see if the computer attempts a counter
+			/*counter = (rand()%2);
+			if (counter == 0) { cout << "\nI don't attempt a counter.\n"; }
+			else { */
+
+			//decide outcome
+			if (pHml == cHml) { 
+				cout << "\nAttack was successfully blocked.\n";
+			} else { 
+				cout << "\nAttack was not blocked, damage was sustained.\n";	
+				mComputer.takeHealth(mPlayer.getHitStrength());
+			}
+			
+			//change health values to suit
+			playerTurn = false;
+		} else {// the computers turn
+			//take in the players block
+			//take in whether the player counters
+			//decide the computers attack
+			//decide outcome
+			//change health values to suit
+			playerTurn = true;
+		}
+		
+		
+	}
+}
+
+void Game::printMove(char highMidLow, bool isPlayer, bool isAttack)
+{
+	string selfId; 
+	if (isPlayer) selfId = "You ";
+	else selfId = "I ";
+	
+	string moveId;
+	if (isAttack) moveId = "attack ";
+	else moveId = "block ";
+
+	string posId;
+	switch(highMidLow) {
+		case 'h':
+			posId = "high.";
+			break;
+		case 'm':
+			posId = "mid.";
+			break;;
+		case 'l':
+			posId = "low.";
+			break;
+		default:
+			cout << "\nGGGGGGFFFFFFFFFFUUUUUURBLEEEHIGHITIIIIIS.\n";
+			posId = "high.";					
+	}
+	cout << "\n" << selfId << moveId << posId << "\n";
+}
+
+char Game::highMidOrLow()
+{
+	int rand3 = (rand()&3);//gets a random number 0, 1 or 2
+	if (rand3 == 0) return 'h';
+	else if (rand3 == 1) return 'm';
+	else return 'l';
+}
+
+bool Game::randBool()
+{
+	return (rand()%2) == 1; //will return a random 0 or 1 value
+}

@@ -19,6 +19,8 @@ private:
 	void printMove(char highMidLow, bool isPlayer, bool isAttack);
 	char highMidOrLow();
 	bool randBool();
+	char getPlayerMove(bool attack);
+	void outcome(char pMove, char cMove, bool isPlayerMove);
 };
 
 #endif
